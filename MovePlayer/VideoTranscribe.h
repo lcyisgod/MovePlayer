@@ -25,7 +25,6 @@
 @interface VideoTranscribe : NSObject
 @property (nonatomic, assign)id<getRate>delegate;
 @property (nonatomic, strong) NSString *videoPath;
-+(VideoTranscribe *)shareDefault;
 //获取视频展示界面
 -(AVCaptureVideoPreviewLayer *)previewLayer;
 //启动录制功能
@@ -45,8 +44,10 @@
 -(void)openFlash;
 //关闭闪光灯
 -(void)closeFlash;
-//切换摄像头
--(void)changeVideoWithType:(BOOL)type;
+//开启前置摄像头
+-(void)openfrontCamera;
+//开启后置摄像头
+-(void)openBackCamera;
 
 //获取播放状态
 -(BOOL)getCapturing;

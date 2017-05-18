@@ -11,8 +11,6 @@
 #import <AVFoundation/AVCaptureVideoPreviewLayer.h>
 #import <Photos/Photos.h>
 
-static VideoTranscribe *videoTranscribe = nil;
-
 @interface VideoTranscribe ()<AVCaptureAudioDataOutputSampleBufferDelegate,AVCaptureVideoDataOutputSampleBufferDelegate>{
     CMTime _timeOffset;       //录制的时间偏移
     CMTime _lastVideo;        //记录上次视频数据文件的CMTime
@@ -43,16 +41,6 @@ static VideoTranscribe *videoTranscribe = nil;
 @end
 @implementation VideoTranscribe
 
-
-+(VideoTranscribe *)shareDefault
-{
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        videoTranscribe = [[VideoTranscribe alloc] init];
-    });
-    return videoTranscribe;
-}
 
 -(instancetype)init
 {
@@ -348,21 +336,24 @@ static VideoTranscribe *videoTranscribe = nil;
 
 }
 
--(void)changeVideoWithType:(BOOL)type
+-(void)openfrontCamera
 {
     [self.recodeSession stopRunning];
-    if (type) {
-        [self.recodeSession removeInput:self.frontCameraInput];
-        if ([self.recodeSession canAddInput:self.backCameraInput]) {
-            [self.recodeSession addInput:self.backCameraInput];
-        }
-    }else{
-        [self.recodeSession removeInput:self.backCameraInput];
-        if ([self.recodeSession canAddInput:self.frontCameraInput]) {
-            [self.recodeSession addInput:self.frontCameraInput];
-            //关闭闪光灯
-            [self closeFlash];
-        }
+    [self.recodeSession removeInput:self.backCameraInput];
+    if ([self.recodeSession canAddInput:self.frontCameraInput]) {
+        [self.recodeSession addInput:self.frontCameraInput];
+        //关闭闪光灯
+        [self closeFlash];
+    }
+    [self.recodeSession startRunning];
+}
+
+-(void)openBackCamera
+{
+    [self.recodeSession stopRunning];
+    [self.recodeSession removeInput:self.frontCameraInput];
+    if ([self.recodeSession canAddInput:self.backCameraInput]) {
+        [self.recodeSession addInput:self.backCameraInput];
     }
     [self.recodeSession startRunning];
 }

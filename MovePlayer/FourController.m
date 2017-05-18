@@ -36,7 +36,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    self.videoTrans = [VideoTranscribe shareDefault];
+    self.videoTrans = [[VideoTranscribe alloc] init];
     self.videoTrans.delegate = self;
     [self.videoTrans previewLayer].frame = self.view.bounds;
     [self.view.layer insertSublayer:[self.videoTrans previewLayer] atIndex:0];
@@ -124,10 +124,15 @@
 
 -(void)fbVideo1:(UIButton *)sender
 {
-    //闪光灯按钮状态
-    [self.lightBtn setUserInteractionEnabled:self.type];
-    [self.videoTrans changeVideoWithType:self.type];
     self.type = !self.type;
+    if (!self.type) {
+        [self.videoTrans openBackCamera];
+        //闪光灯按钮状态
+        [self.lightBtn setUserInteractionEnabled:YES];
+    }else{
+        [self.videoTrans openfrontCamera];
+        [self.lightBtn setUserInteractionEnabled:NO];
+    }
 }
 
 -(void)changeFlashState1:(UIButton *)sender
@@ -199,7 +204,7 @@
 #pragma delegate
 -(void)recodeProgress:(CGFloat)progress
 {
-    NSLog(@"%.2f",progress);
+    
 }
 
 -(void)saveSuccess
@@ -212,7 +217,7 @@
 
 -(void)saveDefaultWithError:(NSError *)erroy
 {
-    
+    NSLog(@"%@",erroy);
 }
 
 
