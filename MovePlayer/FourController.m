@@ -15,6 +15,7 @@
 @interface FourController ()<getRate>
 @property(nonatomic, assign)BOOL lgtype;                    //闪光灯状态
 @property(nonatomic, assign)BOOL type;                      //摄像头状态
+@property(nonatomic, strong)UIView *bgView;                 //顶部的操作View;
 @property(nonatomic, strong)UIButton *cutBtn;               //关闭按钮
 @property(nonatomic, strong)UIButton *lightBtn;             //闪光的按钮
 @property(nonatomic, strong)UIButton *fbBtn;                //改变前后摄像头
@@ -23,6 +24,7 @@
 @property(nonatomic, strong)UIButton *videobtn;             //录制按钮
 @property(nonatomic, strong)VideoTranscribe *videoTrans;    //视频录制对象
 @property(nonatomic, strong)MPMoviePlayerViewController *playerVC;
+@property(nonatomic, strong)UIProgressView *progress;
 @end
 
 @implementation FourController
@@ -33,13 +35,21 @@
     [self.navigationController setNavigationBarHidden:YES];
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.videoTrans shutDown];
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    self.videoTrans = [[VideoTranscribe alloc] init];
-    self.videoTrans.delegate = self;
-    [self.videoTrans previewLayer].frame = self.view.bounds;
-    [self.view.layer insertSublayer:[self.videoTrans previewLayer] atIndex:0];
+    if (!_videoTrans) {
+        self.videoTrans = [[VideoTranscribe alloc] init];
+        self.videoTrans.delegate = self;
+        [self.videoTrans previewLayer].frame = self.view.bounds;
+        [self.view.layer insertSublayer:[self.videoTrans previewLayer] atIndex:0];
+    }
     [self.videoTrans startUp];
 }
 
@@ -53,12 +63,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.cutBtn];
-    [self.view addSubview:self.lightBtn];
-    [self.view addSubview:self.fbBtn];
-    [self.view addSubview:self.stopBtn];
+    [self.view addSubview:self.bgView];
+    [self.bgView addSubview:self.cutBtn];
+    [self.bgView addSubview:self.lightBtn];
+    [self.bgView addSubview:self.fbBtn];
+    [self.bgView addSubview:self.stopBtn];
     [self.view addSubview:self.btnView];
     [self.view addSubview:self.videobtn];
+    [self.view addSubview:self.progress];
+}
+
+-(UIView *)bgView
+{
+    if (!_bgView) {
+        self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60)];
+        self.bgView.backgroundColor = [UIColor clearColor];
+    }
+    return _bgView;
 }
 
 -(UIButton *)cutBtn
@@ -118,7 +139,8 @@
 
 -(void)close1:(UIButton *)sender
 {
-        [self dismissViewControllerAnimated:YES completion:nil];
+    [self.videoTrans shutDown];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)fbVideo1:(UIButton *)sender
@@ -167,6 +189,7 @@
     [player stop];
     [self.playerVC dismissMoviePlayerViewControllerAnimated];
     self.playerVC = nil;
+    [self.progress setProgress:0.0 animated:YES];
 }
 
 -(UIButton *)videobtn
@@ -180,6 +203,16 @@
         [self.videobtn addTarget:self action:@selector(videoStart:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _videobtn;
+}
+
+-(UIProgressView *)progress
+{
+    if (!_progress) {
+        self.progress = [[UIProgressView alloc] initWithFrame:CGRectMake(0, CGRectGetMinY(self.videobtn.frame)-8, self.view.frame.size.width, 2)];
+        self.progress.progressTintColor = [UIColor redColor];
+        self.progress.trackTintColor = [UIColor blueColor];
+    }
+    return _progress;
 }
 
 
@@ -201,14 +234,20 @@
             [self.videoTrans resumeCapture];
         }else
             [self.videoTrans startCapture];
-    }else
+        [UIView animateWithDuration:0.5 animations:^{
+            self.bgView.frame = CGRectMake(0, -self.bgView.frame.size.height, self.bgView.frame.size.width, self.bgView.frame.size.height);
+        }];
+    }else{
         [self.videoTrans pasueCapture];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.bgView.frame = CGRectMake(0, 0, self.bgView.frame.size.width, self.bgView.frame.size.height);
+        }];}
 }
 
 #pragma delegate
 -(void)recodeProgress:(CGFloat)progress
 {
-    
+    [self.progress setProgress:progress animated:YES];
 }
 
 -(void)saveSuccess
@@ -221,6 +260,10 @@
     NSLog(@"%@",erroy);
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -11,7 +11,7 @@
 #import <AVFoundation/AVCaptureVideoPreviewLayer.h>
 #import <Photos/Photos.h>
 
-@interface VideoTranscribe ()<AVCaptureAudioDataOutputSampleBufferDelegate,AVCaptureVideoDataOutputSampleBufferDelegate>{
+@interface VideoTranscribe ()<AVCaptureAudioDataOutputSampleBufferDelegate,AVCaptureVideoDataOutputSampleBufferDelegate,CAAnimationDelegate>{
     CMTime _timeOffset;       //录制的时间偏移
     CMTime _lastVideo;        //记录上次视频数据文件的CMTime
     CMTime _lastAudio;        //记录上次音频数据文件的CMtime
@@ -339,23 +339,41 @@
 -(void)openfrontCamera
 {
     [self.recodeSession stopRunning];
+    [self changeAnimation];
     [self.recodeSession removeInput:self.backCameraInput];
     if ([self.recodeSession canAddInput:self.frontCameraInput]) {
         [self.recodeSession addInput:self.frontCameraInput];
         //关闭闪光灯
         [self closeFlash];
     }
+    //设置视频连接方向为垂直,否则切换摄像头后录制的视频会变成横屏
+    self.videoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
     [self.recodeSession startRunning];
 }
 
 -(void)openBackCamera
 {
     [self.recodeSession stopRunning];
+    [self changeAnimation];
     [self.recodeSession removeInput:self.frontCameraInput];
     if ([self.recodeSession canAddInput:self.backCameraInput]) {
         [self.recodeSession addInput:self.backCameraInput];
     }
+    //设置视频连接方向为垂直,否则切换摄像头后录制的视频会变成横屏
+    self.videoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
     [self.recodeSession startRunning];
+}
+
+//切换动画
+-(void)changeAnimation
+{
+    CATransition *animation = [CATransition animation];
+    animation.delegate = self;
+    animation.duration = 0.45;
+    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    animation.type = @"ogFlip";
+    animation.subtype = kCATransitionFromRight;
+    [self.previewLayer addAnimation:animation forKey:@"changeAnimation"];
 }
 
 -(BOOL)getCapturing
