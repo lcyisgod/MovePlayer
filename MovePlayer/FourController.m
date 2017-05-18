@@ -22,7 +22,7 @@
 @property(nonatomic, strong)UIView *btnView;                //按钮红心
 @property(nonatomic, strong)UIButton *videobtn;             //录制按钮
 @property(nonatomic, strong)VideoTranscribe *videoTrans;    //视频录制对象
-@property(nonatomic, strong)UIProgressView *progressView;
+@property(nonatomic, strong)MPMoviePlayerViewController *playerVC;
 @end
 
 @implementation FourController
@@ -59,7 +59,6 @@
     [self.view addSubview:self.stopBtn];
     [self.view addSubview:self.btnView];
     [self.view addSubview:self.videobtn];
-    [self.view addSubview:self.progressView];
 }
 
 -(UIButton *)cutBtn
@@ -147,12 +146,27 @@
 -(void)stopVideo:(UIButton *)sender
 {
     if (self.videoTrans.videoPath.length > 0) {
+        __weak typeof(self) weakSelf = self;
         [self.videoTrans stopCaptureHandler:^(UIImage *movieImage) {
-           
+            weakSelf.playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:weakSelf.videoTrans.videoPath]];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:[weakSelf.playerVC moviePlayer]];
+            [[weakSelf.playerVC moviePlayer] prepareToPlay];
+            
+            [weakSelf presentMoviePlayerViewControllerAnimated:weakSelf.playerVC];
+            [[weakSelf.playerVC moviePlayer] play];
         }];
     }else{
         NSLog(@"先录制视频");
     }
+}
+
+//当点击Done按键或者播放完毕时调用此函数
+- (void) playVideoFinished:(NSNotification *)theNotification {
+    MPMoviePlayerController *player = [theNotification object];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:player];
+    [player stop];
+    [self.playerVC dismissMoviePlayerViewControllerAnimated];
+    self.playerVC = nil;
 }
 
 -(UIButton *)videobtn
@@ -166,16 +180,6 @@
         [self.videobtn addTarget:self action:@selector(videoStart:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _videobtn;
-}
-
--(UIProgressView *)progressView
-{
-    if (!_progressView) {
-        self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, CGRectGetMinY(self.videobtn.frame)-5, self.view.frame.size.width, 2)];
-        self.progressView.progressTintColor = [UIColor blueColor];
-        self.progressView.tintColor = [UIColor redColor];
-    }
-    return _progressView;
 }
 
 
@@ -209,10 +213,7 @@
 
 -(void)saveSuccess
 {
-    if ([self.delegate respondsToSelector:@selector(getVideoPath:)]) {
-        [self.delegate getVideoPath:self.videoTrans.videoPath];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 -(void)saveDefaultWithError:(NSError *)erroy

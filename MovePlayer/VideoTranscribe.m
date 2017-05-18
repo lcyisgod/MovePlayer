@@ -393,7 +393,6 @@
             
         }
         //是否中断录制过
-        CMTime pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         if (self.discount) {
             if (isVideo) {
                 return;
@@ -404,7 +403,7 @@
             CMTime last = isVideo? _lastVideo : _lastAudio;
             if (last.flags & kCMTimeFlags_Valid) {
                 if (_timeOffset.flags & kCMTimeFlags_Valid) {
-                    pts = CMTimeSubtract(pts, last);
+                    pts = CMTimeSubtract(pts, _timeOffset);
                 }
                 CMTime offset = CMTimeSubtract(pts, last);
                 if (_timeOffset.value == 0) {
@@ -417,7 +416,13 @@
         }
         //增加sampleBuffer的引用计数,这样我们可以释放这个或修改这个数据，防止在修改时被释放
         CFRetain(sampleBuffer);
+        if (_timeOffset.value > 0) {
+            CFRelease(sampleBuffer);
+            //根据得到的timeOffset调整
+            sampleBuffer = [self adjustTime:sampleBuffer by:_timeOffset];
+        }
         // 记录暂停上一次录制的时间
+        CMTime pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         CMTime dur = CMSampleBufferGetDuration(sampleBuffer);
         if (dur.value > 0) {
             pts = CMTimeAdd(pts, dur);
@@ -433,22 +438,21 @@
         self.startTime = dur;
     }
     CMTime sub = CMTimeSubtract(dur, self.startTime);
-    if (_timeOffset.value == 0) {
-        self.currentRecordTime = CMTimeGetSeconds(sub);
-    }else{
-        CMTime sub1 = CMTimeSubtract(sub, _timeOffset);
-        self.currentRecordTime = CMTimeGetSeconds(sub1);
-    }
+    self.currentRecordTime = CMTimeGetSeconds(sub);
     if (self.currentRecordTime > self.maxRecordTime) {
         if (self.currentRecordTime - self.maxRecordTime < 0.1) {
             if ([self.delegate respondsToSelector:@selector(recodeProgress:)]) {
-                [self.delegate recodeProgress:self.currentRecordTime/self.maxRecordTime];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate recodeProgress:self.currentRecordTime/self.maxRecordTime];
+                });
             }
         }
         return;
     }
     if ([self.delegate respondsToSelector:@selector(recodeProgress:)]) {
-        [self.delegate recodeProgress:self.currentRecordTime/self.maxRecordTime];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate recodeProgress:self.currentRecordTime/self.maxRecordTime];
+        });
     }
     // 进行数据编码
     [self.videoWriter encodeFrame:sampleBuffer isVideo:isVideo];
@@ -463,6 +467,24 @@
     _channels = asbd->mChannelsPerFrame;
     
 }
+
+//调整媒体数据的时间
+- (CMSampleBufferRef)adjustTime:(CMSampleBufferRef)sample by:(CMTime)offset {
+    CMItemCount count;
+    CMSampleBufferGetSampleTimingInfoArray(sample, 0, nil, &count);
+    CMSampleTimingInfo* pInfo = malloc(sizeof(CMSampleTimingInfo) * count);
+    CMSampleBufferGetSampleTimingInfoArray(sample, count, pInfo, &count);
+    for (CMItemCount i = 0; i < count; i++) {
+        pInfo[i].decodeTimeStamp = CMTimeSubtract(pInfo[i].decodeTimeStamp, offset);
+        pInfo[i].presentationTimeStamp = CMTimeSubtract(pInfo[i].presentationTimeStamp, offset);
+    }
+    CMSampleBufferRef sout;
+    CMSampleBufferCreateCopyWithNewTiming(nil, sample, count, pInfo, &sout);
+    free(pInfo);
+    return sout;
+}
+
+
 //创建音频文件路径
 - (NSString *)getUploadFile_type:(NSString *)type fileType:(NSString *)fileType {
     NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
