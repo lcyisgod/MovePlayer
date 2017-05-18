@@ -16,17 +16,16 @@
 
 //计算当前的录制进度
 @protocol getRate <NSObject>
-
+@optional
 -(void)recodeProgress:(CGFloat)progress;
-
+//视频文件是否存储成功
+-(void)saveSuccess;
+-(void)saveDefaultWithError:(NSError *)erroy;
 @end
 @interface VideoTranscribe : NSObject
 @property (nonatomic, assign)id<getRate>delegate;
-@property (nonatomic, assign, readonly) BOOL isCapturing;//正在录制
-@property (nonatomic, assign, readonly) BOOL isPaused;//是否暂停
-@property (nonatomic, assign, readonly) CGFloat currentRecordTime;//当前录制时间
-@property (nonatomic, assign) CGFloat maxRecordTime;//录制最长时间
-@property (nonatomic, strong) NSString *videoPath;//视频路径
+@property (nonatomic, strong) NSString *videoPath;
++(VideoTranscribe *)shareDefault;
 //获取视频展示界面
 -(AVCaptureVideoPreviewLayer *)previewLayer;
 //启动录制功能
@@ -48,4 +47,9 @@
 -(void)closeFlash;
 //切换摄像头
 -(void)changeVideoWithType:(BOOL)type;
+
+//获取播放状态
+-(BOOL)getCapturing;
+//设置最长播放时间
+-(void)setMaxRecordTimes:(CGFloat)maxRecordTime;
 @end

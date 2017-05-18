@@ -7,14 +7,12 @@
 //
 
 #import "ViewController.h"
-#import "SecondController.h"
-#import "ThirdController.h"
 #import "FourController.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface ViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface ViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,retunVideoPath>
 @property(nonatomic, assign)int isVideo;         //是否录制视频 0:拍照  1:录制视频
 @property(nonatomic, strong)UIImagePickerController *imagepicker;
 @property(nonatomic, strong)UIImageView *photo;
@@ -52,7 +50,21 @@
 {
 //    ThirdController *secVC = [ThirdController new];
 //    [self presentViewController:secVC animated:YES completion:nil];
-    [self presentViewController:[FourController new] animated:YES completion:nil];
+    FourController *fourVC = [FourController new];
+    fourVC.delegate = self;
+    [self presentViewController:fourVC animated:YES completion:nil];
+}
+
+-(void)getVideoPath:(NSString *)path
+{
+    NSURL *url = [NSURL fileURLWithPath:path];
+    _player = [AVPlayer playerWithURL:url];
+    AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+    //设置填充方式，否则无法修改宽度
+    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    playerLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, self.photo.frame.size.height);
+    [self.photo.layer addSublayer:playerLayer];
+    [_player play];
 }
 
 -(void)startMp:(UIButton *)sender

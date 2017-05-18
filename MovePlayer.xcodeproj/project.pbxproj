@@ -15,8 +15,6 @@
 		183DE0E81E56DCAF00548EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 183DE0E61E56DCAF00548EDB /* LaunchScreen.storyboard */; };
 		183DE0F31E56DCAF00548EDB /* MovePlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 183DE0F21E56DCAF00548EDB /* MovePlayerTests.m */; };
 		183DE0FE1E56DCAF00548EDB /* MovePlayerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 183DE0FD1E56DCAF00548EDB /* MovePlayerUITests.m */; };
-		18F9C4011E573B8F00EA56AE /* SecondController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C4001E573B8F00EA56AE /* SecondController.m */; };
-		18F9C4041E5C16AC00EA56AE /* ThirdController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C4031E5C16AC00EA56AE /* ThirdController.m */; };
 		18F9C4071E5D0CCC00EA56AE /* VideoTranscribe.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C4061E5D0CCC00EA56AE /* VideoTranscribe.m */; };
 		18F9C40A1E5D23CF00EA56AE /* VideoWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C4091E5D23CF00EA56AE /* VideoWriter.m */; };
 		18F9C40D1E5D34FE00EA56AE /* FourController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C40C1E5D34FE00EA56AE /* FourController.m */; };
@@ -56,10 +54,6 @@
 		183DE0F91E56DCAF00548EDB /* MovePlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovePlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		183DE0FD1E56DCAF00548EDB /* MovePlayerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MovePlayerUITests.m; sourceTree = "<group>"; };
 		183DE0FF1E56DCAF00548EDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		18F9C3FF1E573B8F00EA56AE /* SecondController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondController.h; sourceTree = "<group>"; };
-		18F9C4001E573B8F00EA56AE /* SecondController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondController.m; sourceTree = "<group>"; };
-		18F9C4021E5C16AC00EA56AE /* ThirdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdController.h; sourceTree = "<group>"; };
-		18F9C4031E5C16AC00EA56AE /* ThirdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdController.m; sourceTree = "<group>"; };
 		18F9C4051E5D0CCC00EA56AE /* VideoTranscribe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoTranscribe.h; sourceTree = "<group>"; };
 		18F9C4061E5D0CCC00EA56AE /* VideoTranscribe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoTranscribe.m; sourceTree = "<group>"; };
 		18F9C4081E5D23CF00EA56AE /* VideoWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoWriter.h; sourceTree = "<group>"; };
@@ -120,10 +114,6 @@
 				183DE0DC1E56DCAF00548EDB /* AppDelegate.m */,
 				183DE0DE1E56DCAF00548EDB /* ViewController.h */,
 				183DE0DF1E56DCAF00548EDB /* ViewController.m */,
-				18F9C3FF1E573B8F00EA56AE /* SecondController.h */,
-				18F9C4001E573B8F00EA56AE /* SecondController.m */,
-				18F9C4021E5C16AC00EA56AE /* ThirdController.h */,
-				18F9C4031E5C16AC00EA56AE /* ThirdController.m */,
 				18F9C40B1E5D34FE00EA56AE /* FourController.h */,
 				18F9C40C1E5D34FE00EA56AE /* FourController.m */,
 				18F9C4051E5D0CCC00EA56AE /* VideoTranscribe.h */,
@@ -303,10 +293,8 @@
 			files = (
 				183DE0E01E56DCAF00548EDB /* ViewController.m in Sources */,
 				18F9C40A1E5D23CF00EA56AE /* VideoWriter.m in Sources */,
-				18F9C4011E573B8F00EA56AE /* SecondController.m in Sources */,
 				18F9C40D1E5D34FE00EA56AE /* FourController.m in Sources */,
 				183DE0DD1E56DCAF00548EDB /* AppDelegate.m in Sources */,
-				18F9C4041E5C16AC00EA56AE /* ThirdController.m in Sources */,
 				18F9C4071E5D0CCC00EA56AE /* VideoTranscribe.m in Sources */,
 				183DE0DA1E56DCAF00548EDB /* main.m in Sources */,
 			);

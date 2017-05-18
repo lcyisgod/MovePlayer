@@ -11,6 +11,8 @@
 #import <AVFoundation/AVCaptureVideoPreviewLayer.h>
 #import <Photos/Photos.h>
 
+static VideoTranscribe *videoTranscribe = nil;
+
 @interface VideoTranscribe ()<AVCaptureAudioDataOutputSampleBufferDelegate,AVCaptureVideoDataOutputSampleBufferDelegate>{
     CMTime _timeOffset;       //录制的时间偏移
     CMTime _lastVideo;        //记录上次视频数据文件的CMTime
@@ -37,15 +39,27 @@
 @property(nonatomic, assign)BOOL discount;                              //是否中断
 @property(nonatomic, assign)CMTime startTime;                           //开始录制时间
 @property(nonatomic, assign)CGFloat currentRecordTime;                  //当前录制时间
+@property (nonatomic, assign) CGFloat maxRecordTime;//录制最长时间
 @end
 @implementation VideoTranscribe
 
-#pragma mark - session及其方法
+
++(VideoTranscribe *)shareDefault
+{
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        videoTranscribe = [[VideoTranscribe alloc] init];
+    });
+    return videoTranscribe;
+}
+
 -(instancetype)init
 {
     self = [super init];
     if (self) {
-        self.maxRecordTime = 60.0f;
+        //默认最长录制时间一分钟
+        self.maxRecordTime = 60.0;
     }
     return self;
 }
@@ -212,18 +226,13 @@
 -(void)startUp
 {
     self.startTime = CMTimeMake(0, 0);
-    self.isCapturing = NO;
-    self.isPasued = NO;
-    self.discount = NO;
     [self.recodeSession startRunning];
 }
 
 -(void)shutDown
 {
     self.startTime = CMTimeMake(0, 0);
-    if (!_recodeSession) {
-        [self.recodeSession startRunning];
-    }
+    [self.recodeSession stopRunning];
     [self.videoWriter finishWithCompletionHandler:^{
         
     }];
@@ -267,7 +276,15 @@
                    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
                        [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
                    } completionHandler:^(BOOL success, NSError * _Nullable error) {
-                       NSLog(@"保存成功");
+                       if (!error) {
+                           if ([self.delegate respondsToSelector:@selector(saveSuccess)]) {
+                               [self.delegate saveSuccess];
+                           }
+                       }else{
+                           if ([self.delegate respondsToSelector:@selector(saveDefaultWithError:)]) {
+                               [self.delegate saveDefaultWithError:error];
+                           }
+                       }
                    }];
                    [self movieToImageHandler:handle];
                }];
@@ -350,13 +367,24 @@
     [self.recodeSession startRunning];
 }
 
+-(BOOL)getCapturing
+{
+    return self.isCapturing;
+}
+
+-(void)setMaxRecordTimes:(CGFloat)maxRecordTime
+{
+    self.maxRecordTime = maxRecordTime;
+}
+
 #pragma mark - 代理方法
 //写入数据
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+    //是否在录制
     BOOL isVideo = YES;
     @synchronized (self) {
-        //没有录制或者暂停的时候
+        //没有录制或者暂停的时候不写入数据
         if (!self.isCapturing || self.isPasued) {
             return;
         }
@@ -374,6 +402,7 @@
             
         }
         //是否中断录制过
+        CMTime pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         if (self.discount) {
             if (isVideo) {
                 return;
@@ -395,13 +424,9 @@
             _lastAudio.flags = 0;
             _lastVideo.flags = 0;
         }
-        // 增加sampleBuffer的引用计时,这样我们可以释放这个或修改这个数据，防止在修改时被释放
+        //增加sampleBuffer的引用计数,这样我们可以释放这个或修改这个数据，防止在修改时被释放
         CFRetain(sampleBuffer);
-        if (_timeOffset.value > 0) {
-            CFRelease(sampleBuffer);
-        }
         // 记录暂停上一次录制的时间
-        CMTime pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         CMTime dur = CMSampleBufferGetDuration(sampleBuffer);
         if (dur.value > 0) {
             pts = CMTimeAdd(pts, dur);
@@ -417,7 +442,12 @@
         self.startTime = dur;
     }
     CMTime sub = CMTimeSubtract(dur, self.startTime);
-    self.currentRecordTime = CMTimeGetSeconds(sub);
+    if (_timeOffset.value == 0) {
+        self.currentRecordTime = CMTimeGetSeconds(sub);
+    }else{
+        CMTime sub1 = CMTimeSubtract(sub, _timeOffset);
+        self.currentRecordTime = CMTimeGetSeconds(sub1);
+    }
     if (self.currentRecordTime > self.maxRecordTime) {
         if (self.currentRecordTime - self.maxRecordTime < 0.1) {
             if ([self.delegate respondsToSelector:@selector(recodeProgress:)]) {
