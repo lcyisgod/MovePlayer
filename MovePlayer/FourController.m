@@ -204,13 +204,10 @@
 
 -(void)saveSuccess
 {
-//    if ([self.delegate respondsToSelector:@selector(getVideoPath:)]) {
-//        [self.delegate getVideoPath:self.videoTrans.videoPath];
-//    }
-//    [self dismissViewControllerAnimated:YES completion:nil];
-    MPMoviePlayerViewController *play = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL URLWithString:self.videoTrans.videoPath]];
-    play.view.frame = self.view.frame;
-    [self presentViewController:play animated:YES completion:nil];
+    if ([self.delegate respondsToSelector:@selector(getVideoPath:)]) {
+        [self.delegate getVideoPath:self.videoTrans.videoPath];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)saveDefaultWithError:(NSError *)erroy

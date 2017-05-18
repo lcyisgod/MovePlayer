@@ -18,6 +18,7 @@
 		18F9C4071E5D0CCC00EA56AE /* VideoTranscribe.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C4061E5D0CCC00EA56AE /* VideoTranscribe.m */; };
 		18F9C40A1E5D23CF00EA56AE /* VideoWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C4091E5D23CF00EA56AE /* VideoWriter.m */; };
 		18F9C40D1E5D34FE00EA56AE /* FourController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9C40C1E5D34FE00EA56AE /* FourController.m */; };
+		D8B32E541ECD3819009A48B9 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B32E531ECD3819009A48B9 /* MediaPlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		18F9C4091E5D23CF00EA56AE /* VideoWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoWriter.m; sourceTree = "<group>"; };
 		18F9C40B1E5D34FE00EA56AE /* FourController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourController.h; sourceTree = "<group>"; };
 		18F9C40C1E5D34FE00EA56AE /* FourController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourController.m; sourceTree = "<group>"; };
+		D8B32E531ECD3819009A48B9 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8B32E541ECD3819009A48B9 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +97,7 @@
 				183DE0F11E56DCAF00548EDB /* MovePlayerTests */,
 				183DE0FC1E56DCAF00548EDB /* MovePlayerUITests */,
 				183DE0D61E56DCAF00548EDB /* Products */,
+				D8B32E521ECD3819009A48B9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -153,6 +157,14 @@
 				183DE0FF1E56DCAF00548EDB /* Info.plist */,
 			);
 			path = MovePlayerUITests;
+			sourceTree = "<group>";
+		};
+		D8B32E521ECD3819009A48B9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D8B32E531ECD3819009A48B9 /* MediaPlayer.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
