@@ -35,12 +35,6 @@
     [self.navigationController setNavigationBarHidden:YES];
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.videoTrans shutDown];
-}
-
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -139,7 +133,6 @@
 
 -(void)close1:(UIButton *)sender
 {
-    [self.videoTrans shutDown];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
