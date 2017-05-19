@@ -41,6 +41,7 @@
     if (!_videoTrans) {
         self.videoTrans = [[VideoTranscribe alloc] init];
         self.videoTrans.delegate = self;
+        [self.videoTrans setMaxRecordTimes:30.0f];
         [self.videoTrans previewLayer].frame = self.view.bounds;
         [self.view.layer insertSublayer:[self.videoTrans previewLayer] atIndex:0];
     }
@@ -183,6 +184,11 @@
     [self.playerVC dismissMoviePlayerViewControllerAnimated];
     self.playerVC = nil;
     [self.progress setProgress:0.0 animated:YES];
+    if (self.bgView.frame.origin.y < 0) {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.bgView.frame = CGRectMake(0, 0, CGRectGetWidth(self.bgView.frame), CGRectGetHeight(self.bgView.frame));
+        }];
+    }
 }
 
 -(UIButton *)videobtn
@@ -240,6 +246,19 @@
 #pragma delegate
 -(void)recodeProgress:(CGFloat)progress
 {
+    //此处表示已达到录制的最长时间
+    if (progress >= 1.0) {
+        //保存视频,如果想做其它处理可替换该方法
+        __weak typeof(self) weakSelf = self;
+        [self.videoTrans stopCaptureHandler:^(UIImage *movieImage) {
+            weakSelf.playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:weakSelf.videoTrans.videoPath]];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:[weakSelf.playerVC moviePlayer]];
+            [[weakSelf.playerVC moviePlayer] prepareToPlay];
+            
+            [weakSelf presentMoviePlayerViewControllerAnimated:weakSelf.playerVC];
+            [[weakSelf.playerVC moviePlayer] play];
+        }];
+    }
     [self.progress setProgress:progress animated:YES];
 }
 

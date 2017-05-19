@@ -463,6 +463,8 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.delegate recodeProgress:self.currentRecordTime/self.maxRecordTime];
                 });
+            }else{
+                return;
             }
         }
         return;
