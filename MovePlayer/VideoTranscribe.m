@@ -369,7 +369,7 @@
 {
     CATransition *animation = [CATransition animation];
     animation.delegate = self;
-    animation.duration = 0.45;
+    animation.duration = 0.45f;
     animation.timingFunction = UIViewAnimationCurveEaseInOut;
     animation.type = @"ogFlip";
     animation.subtype = kCATransitionFromRight;
