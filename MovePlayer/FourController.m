@@ -8,7 +8,6 @@
 
 #import "FourController.h"
 #import "VideoTranscribe.h"
-#import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
 
 
