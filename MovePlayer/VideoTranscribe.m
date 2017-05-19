@@ -85,7 +85,9 @@
 }
 //视频连接
 - (AVCaptureConnection *)videoConnection {
-    _videoConnection = [self.videoDataOutPut connectionWithMediaType:AVMediaTypeVideo];
+    if (_videoConnection == nil) {
+        _videoConnection = [self.videoDataOutPut connectionWithMediaType:AVMediaTypeVideo];
+    }
     return _videoConnection;
 }
 
