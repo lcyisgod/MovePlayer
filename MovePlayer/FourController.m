@@ -37,6 +37,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    //测试提交
     if (!_videoTrans) {
         self.videoTrans = [[VideoTranscribe alloc] init];
         self.videoTrans.delegate = self;
