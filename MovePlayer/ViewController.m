@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SecondController.h"
 #import "FourController.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -18,6 +19,8 @@
 @property(nonatomic, strong)UIImageView *photo;
 @property(nonatomic, strong)UIButton *btnClick;  //视频录制按钮
 @property(nonatomic, strong)AVPlayer *player;    //播放器,用于录制完视频后的播放
+
+@property(nonatomic, strong)UIButton *btnClick1;
 @end
 
 @implementation ViewController
@@ -39,11 +42,25 @@
     [self.btnClick addTarget:self action:@selector(startMp:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.btnClick];
     
+    self.btnClick1 = [[UIButton alloc] initWithFrame:CGRectMake(self.view.center.x-40, self.view.center.y+120, 80, 60)];
+    [self.btnClick1 setBackgroundColor:[UIColor redColor]];
+    [self.btnClick1 setTitle:@"下一个" forState:UIControlStateNormal];
+    [self.btnClick1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    self.btnClick1.titleLabel.font = [UIFont systemFontOfSize:15.0];
+    [self.btnClick1 addTarget:self action:@selector(pushNext1:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.btnClick1];
+    
     
     
     self.photo = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 280)];
     self.photo.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.photo];
+}
+
+-(void)pushNext1:(UIButton *)sender
+{
+    SecondController *secVC = [SecondController new];
+    [self.navigationController pushViewController:secVC animated:YES];
 }
 
 -(void)pushNext:(UIBarButtonItem *)sender
