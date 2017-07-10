@@ -194,6 +194,7 @@
 		D8C460511F0B826E00E4E756 /* img2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D8C4604F1F0B826E00E4E756 /* img2.jpg */; };
 		D8C460521F0B826E00E4E756 /* img1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D8C460501F0B826E00E4E756 /* img1.jpg */; };
 		D8C460551F0DD2E700E4E756 /* ThirdController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C460541F0DD2E700E4E756 /* ThirdController.m */; };
+		D8C5A54A1F13613300AB3145 /* 月半弯.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D8C5A5491F13613300AB3145 /* 月半弯.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -580,6 +581,7 @@
 		D8C460501F0B826E00E4E756 /* img1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img1.jpg; sourceTree = "<group>"; };
 		D8C460531F0DD2E700E4E756 /* ThirdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdController.h; sourceTree = "<group>"; };
 		D8C460541F0DD2E700E4E756 /* ThirdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdController.m; sourceTree = "<group>"; };
+		D8C5A5491F13613300AB3145 /* 月半弯.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "月半弯.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -632,6 +634,7 @@
 		183DE0D71E56DCAF00548EDB /* MovePlayer */ = {
 			isa = PBXGroup;
 			children = (
+				D8C5A5491F13613300AB3145 /* 月半弯.mp3 */,
 				D8C4604F1F0B826E00E4E756 /* img2.jpg */,
 				D8C460501F0B826E00E4E756 /* img1.jpg */,
 				D8C45E4D1F0B6E4500E4E756 /* GPUImage */,
@@ -1191,6 +1194,7 @@
 				183DE0E81E56DCAF00548EDB /* LaunchScreen.storyboard in Resources */,
 				183DE0E51E56DCAF00548EDB /* Assets.xcassets in Resources */,
 				183DE0E31E56DCAF00548EDB /* Main.storyboard in Resources */,
+				D8C5A54A1F13613300AB3145 /* 月半弯.mp3 in Resources */,
 				D8C4604D1F0B6E4600E4E756 /* License.txt in Resources */,
 				D8C460511F0B826E00E4E756 /* img2.jpg in Resources */,
 				D8C45FA41F0B6E4600E4E756 /* lookup.png in Resources */,
