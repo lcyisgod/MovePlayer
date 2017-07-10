@@ -8,11 +8,14 @@
 
 #import "ViewController.h"
 #import "SecondController.h"
+#import "ThirdController.h"
 #import "FourController.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
 
+//#define SecondVC
+#define Thi rdVC
 @interface ViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property(nonatomic, assign)int isVideo;         //是否录制视频 0:拍照  1:录制视频
 @property(nonatomic, strong)UIImagePickerController *imagepicker;
@@ -59,8 +62,13 @@
 
 -(void)pushNext1:(UIButton *)sender
 {
-    SecondController *secVC = [SecondController new];
-    [self.navigationController pushViewController:secVC animated:YES];
+    UIViewController *vc = nil;
+#ifdef SecondVC
+    vc = [[SecondController alloc] init];
+#else
+    vc = [ThirdController new];
+#endif
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)pushNext:(UIBarButtonItem *)sender

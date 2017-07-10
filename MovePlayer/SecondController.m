@@ -205,11 +205,12 @@
     [parentLayer addSublayer:videoLayer];
     [parentLayer addSublayer:overlayLayer];
     
+    //水印出现的时间
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     [animation setDuration:1];
     [animation setFromValue:[NSNumber numberWithFloat:0.0]];
     [animation setToValue:[NSNumber numberWithFloat:1]];
-    [animation setBeginTime:0.9];
+    [animation setBeginTime:asset.duration.value/asset.duration.timescale-5.0f];
     [animation setRemovedOnCompletion:NO];
     [animation setFillMode:kCAFillModeForwards];
     [imgLayer addAnimation:animation forKey:@"animateOpacity"];
