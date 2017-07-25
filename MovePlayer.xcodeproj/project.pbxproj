@@ -195,6 +195,7 @@
 		D8C460521F0B826E00E4E756 /* img1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D8C460501F0B826E00E4E756 /* img1.jpg */; };
 		D8C460551F0DD2E700E4E756 /* ThirdController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C460541F0DD2E700E4E756 /* ThirdController.m */; };
 		D8C5A54A1F13613300AB3145 /* 月半弯.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D8C5A5491F13613300AB3145 /* 月半弯.mp3 */; };
+		D8C5A54D1F137B8E00AB3145 /* FiveController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C5A54C1F137B8E00AB3145 /* FiveController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -582,6 +583,8 @@
 		D8C460531F0DD2E700E4E756 /* ThirdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdController.h; sourceTree = "<group>"; };
 		D8C460541F0DD2E700E4E756 /* ThirdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdController.m; sourceTree = "<group>"; };
 		D8C5A5491F13613300AB3145 /* 月半弯.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "月半弯.mp3"; sourceTree = "<group>"; };
+		D8C5A54B1F137B8E00AB3145 /* FiveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FiveController.h; sourceTree = "<group>"; };
+		D8C5A54C1F137B8E00AB3145 /* FiveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FiveController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -642,12 +645,14 @@
 				183DE0DC1E56DCAF00548EDB /* AppDelegate.m */,
 				183DE0DE1E56DCAF00548EDB /* ViewController.h */,
 				183DE0DF1E56DCAF00548EDB /* ViewController.m */,
-				18F9C40B1E5D34FE00EA56AE /* FourController.h */,
-				18F9C40C1E5D34FE00EA56AE /* FourController.m */,
 				D8C45E4A1F0B63A600E4E756 /* SecondController.h */,
 				D8C45E4B1F0B63A600E4E756 /* SecondController.m */,
 				D8C460531F0DD2E700E4E756 /* ThirdController.h */,
 				D8C460541F0DD2E700E4E756 /* ThirdController.m */,
+				18F9C40B1E5D34FE00EA56AE /* FourController.h */,
+				18F9C40C1E5D34FE00EA56AE /* FourController.m */,
+				D8C5A54B1F137B8E00AB3145 /* FiveController.h */,
+				D8C5A54C1F137B8E00AB3145 /* FiveController.m */,
 				18F9C4051E5D0CCC00EA56AE /* VideoTranscribe.h */,
 				18F9C4061E5D0CCC00EA56AE /* VideoTranscribe.m */,
 				18F9C4081E5D23CF00EA56AE /* VideoWriter.h */,
@@ -1381,6 +1386,7 @@
 				D8C45FFA1F0B6E4600E4E756 /* GPUImageLuminosity.m in Sources */,
 				D8C460371F0B6E4600E4E756 /* GPUImageTiltShiftFilter.m in Sources */,
 				D8C45FB01F0B6E4600E4E756 /* GPUImageAverageColor.m in Sources */,
+				D8C5A54D1F137B8E00AB3145 /* FiveController.m in Sources */,
 				D8C4602F1F0B6E4600E4E756 /* GPUImageSubtractBlendFilter.m in Sources */,
 				D8C45FBD1F0B6E4600E4E756 /* GPUImageColorBurnBlendFilter.m in Sources */,
 				D8C45FB41F0B6E4600E4E756 /* GPUImageBrightnessFilter.m in Sources */,

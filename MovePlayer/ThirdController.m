@@ -131,7 +131,6 @@
 }
 
 
-//[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"月半弯" ofType:@"mp3"]]
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

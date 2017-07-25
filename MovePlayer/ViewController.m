@@ -10,12 +10,14 @@
 #import "SecondController.h"
 #import "ThirdController.h"
 #import "FourController.h"
+#import "FiveController.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
 
 //#define SecondVC
-#define Thi rdVC
+//#define ThbirdVC
+#define FiveVC
 @interface ViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property(nonatomic, assign)int isVideo;         //是否录制视频 0:拍照  1:录制视频
 @property(nonatomic, strong)UIImagePickerController *imagepicker;
@@ -65,8 +67,10 @@
     UIViewController *vc = nil;
 #ifdef SecondVC
     vc = [[SecondController alloc] init];
-#else
+#elseif ThirdVC
     vc = [ThirdController new];
+#else
+    vc = [FiveController new];
 #endif
     [self.navigationController pushViewController:vc animated:YES];
 }
